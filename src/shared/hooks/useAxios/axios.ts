@@ -1,15 +1,17 @@
 import {useState} from 'react';
 import axios, {AxiosResponse} from 'axios';
+import {useDataPostContext} from "../../../providers/DataPostContext/DataPostContext";
+import {PostType} from "../../../providers/models/PostType";
 
-interface AxiosHookResponse<T> {
-    data: T ;
+interface AxiosHookResponse {
+    dataPost: PostType[] ;
     error: any;
     loading: boolean;
     executeRequest: (method: string, url: string, requestData?: any) => Promise<void>;
 }
 
-const useAxios = <T>(): AxiosHookResponse<T> => {
-    const [data, setData] = useState<T>(<T>[]);
+const useAxios = (): AxiosHookResponse => {
+    const {dataPost, setDataPost} = useDataPostContext()
     const [error, setError] = useState<any>(null);
     const [loading, setLoading] = useState<boolean>(false);
 
@@ -21,22 +23,22 @@ const useAxios = <T>(): AxiosHookResponse<T> => {
 
         setLoading(true);
         try {
-            let response: AxiosResponse<T>;
+            let response: AxiosResponse;
             switch (method.toUpperCase()) {
                 case 'GET':
-                    response = await axios.get<T>(url, {headers});
+                    response = await axios.get(url, {headers});
                     break;
                 case 'POST':
-                    response = await axios.post<T>(url, requestData, {headers});
+                    response = await axios.post(url, requestData, {headers});
                     break;
                 case 'PUT':
-                    response = await axios.put<T>(url, requestData, {headers});
+                    response = await axios.put(url, requestData, {headers});
                     break;
                 default:
                     throw new Error('Unsupported method');
             }
             // console.log(response.data)
-            setData(response.data);
+            setDataPost(response.data);
             setLoading(false);
         } catch (error) {
             setError(error);
@@ -44,7 +46,7 @@ const useAxios = <T>(): AxiosHookResponse<T> => {
         }
     };
 
-    return {data, error, loading, executeRequest};
+    return {dataPost, error, loading, executeRequest};
 };
 
 export default useAxios;

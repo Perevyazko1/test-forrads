@@ -37,7 +37,7 @@ export function useInfiniteScroll({triggerRef, rowHeight, marginRow, widthElemen
         return (rowHeight + marginRow) * startSlice
     }
     const wrapperHeight = () => {
-        return rowHeight * visibleRow - 90
+        return rowHeight * visibleRow + 130
     }
 
     function splitArrayIntoRows(ids: any[], rowWidth: number): { [key: string]: any[] } {
