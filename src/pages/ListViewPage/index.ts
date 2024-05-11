@@ -1,0 +1,1 @@
+export {DetailsListViewPage as ListViewPage} from "./ui/ListViewPage.async";

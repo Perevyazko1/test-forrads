@@ -1,0 +1,1 @@
+export {DetailsDetailViewPage as DetailViewPage} from "./ui/DetailViewPage.async";
