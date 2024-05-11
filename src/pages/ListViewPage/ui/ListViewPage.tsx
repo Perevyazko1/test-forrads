@@ -61,7 +61,6 @@ const ListViewPage = memo((props: ListViewPageProps) => {
 
 
     return (
-        <WrapperPage>
 
 
             <div
@@ -101,7 +100,6 @@ const ListViewPage = memo((props: ListViewPageProps) => {
 
                 </div>
             </div>
-        </WrapperPage>
     )
         ;
 });
