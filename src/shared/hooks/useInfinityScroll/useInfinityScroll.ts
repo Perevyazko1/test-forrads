@@ -37,7 +37,7 @@ export function useInfiniteScroll({triggerRef, rowHeight, marginRow, widthElemen
         return (rowHeight + marginRow) * startSlice
     }
     const wrapperHeight = () => {
-        return rowHeight * visibleRow + 130
+        return rowHeight * visibleRow +50
     }
 
     function splitArrayIntoRows(ids: any[], rowWidth: number): { [key: string]: any[] } {
@@ -62,10 +62,13 @@ export function useInfiniteScroll({triggerRef, rowHeight, marginRow, widthElemen
 
     useEffect(() => {
         function onScroll(e: any) {
-
-            setStartSlice(
+            if (e.target.scrollTop > 1){
+                            setStartSlice(
                 Math.floor(e.target.scrollTop / (rowHeight + marginRow))
             )
+
+            }
+
         }
 
         triggerRef.current && triggerRef.current.addEventListener('scroll', onScroll);

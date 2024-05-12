@@ -6,6 +6,7 @@ import {Card} from "antd";
 import {useInfiniteScroll} from "../../../shared/hooks/useInfinityScroll/useInfinityScroll";
 import {useNavigate} from "react-router-dom";
 import {WrapperPage} from "../../../shared/WrapperPage/WrapperPage";
+import cls from "./ListViewPage.module.scss"
 
 interface ListViewPageProps {
     className?: string
@@ -54,7 +55,7 @@ const ListViewPage = memo((props: ListViewPageProps) => {
             triggerRef,
             rowHeight: 130,
             marginRow: 30,
-            widthElement: 440,
+            widthElement: 300,
             data: dataSort
         }
     )
@@ -62,11 +63,11 @@ const ListViewPage = memo((props: ListViewPageProps) => {
 
     return (
 
-
+        <WrapperPage>
             <div
+                className={cls.ListView}
                 style={{
-                    height: wrapperHeight(), overflow: 'auto', justifyContent: "center",
-                    display: "flex"
+                    height: wrapperHeight()
                 }}
                 ref={triggerRef}
                 {...otherProps}
@@ -85,6 +86,7 @@ const ListViewPage = memo((props: ListViewPageProps) => {
                                         size="small"
                                         title={post.title}
                                         key={index + ""}
+                                        className={cls.card}
 
                                         style={{width: widthElement, marginRight: marginRow, marginLeft: marginRow}}
                                     >
@@ -100,6 +102,7 @@ const ListViewPage = memo((props: ListViewPageProps) => {
 
                 </div>
             </div>
+        </WrapperPage>
     )
         ;
 });

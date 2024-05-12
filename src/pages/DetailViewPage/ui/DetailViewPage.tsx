@@ -33,8 +33,6 @@ const DetailViewPage = memo((props: DetailViewPageProps) => {
             <Descriptions title="Post Info" className={cls.DetailViewPage}
                           bordered
             >
-
-
                 <Descriptions.Item span={3} label="User ID">{postDetail[0].userId}</Descriptions.Item>
                 <Descriptions.Item span={3} label="ID">{postDetail[0].id}</Descriptions.Item>
                 <Descriptions.Item span={3} label="Заголовок">{postDetail[0].title}</Descriptions.Item>
