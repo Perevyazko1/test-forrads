@@ -1,12 +1,12 @@
 import {memo, MutableRefObject, ReactNode, useEffect, useRef} from 'react';
-import useAxios from "../../../shared/hooks/useAxios/axios";
-import {PostType} from "../../../providers/models/PostType";
-// import cls from "./ListViewPage.module.scss"
+import useAxios from "shared/hooks/useAxios/axios";
+import {PostType} from "providers/models/PostType";
 import {Card} from "antd";
-import {useInfiniteScroll} from "../../../shared/hooks/useInfinityScroll/useInfinityScroll";
+import {useInfiniteScroll} from "shared/hooks/useInfinityScroll/useInfinityScroll";
 import {useNavigate} from "react-router-dom";
-import {WrapperPage} from "../../../shared/WrapperPage/WrapperPage";
+import {WrapperPage} from "shared/WrapperPage/WrapperPage";
 import cls from "./ListViewPage.module.scss"
+import {Loader} from "shared/Loader/Loader";
 
 interface ListViewPageProps {
     className?: string
@@ -20,7 +20,7 @@ const ListViewPage = memo((props: ListViewPageProps) => {
         children,
         ...otherProps
     } = props
-    const {dataPost: dataSort, error, loading, executeRequest} = useAxios();
+    const {data, error, loading, executeRequest} = useAxios<PostType[]>();
     const triggerRef = useRef() as MutableRefObject<HTMLDivElement>
     const navigate = useNavigate()
 
@@ -56,7 +56,7 @@ const ListViewPage = memo((props: ListViewPageProps) => {
             rowHeight: 130,
             marginRow: 30,
             widthElement: 300,
-            data: dataSort
+            data: data ? data : []
         }
     )
 
@@ -64,44 +64,54 @@ const ListViewPage = memo((props: ListViewPageProps) => {
     return (
 
         <WrapperPage>
-            <div
-                className={cls.ListView}
-                style={{
-                    height: wrapperHeight()
-                }}
-                ref={triggerRef}
-                {...otherProps}
-            >
+            {!loading && !error &&
 
-                <div style={{justifyContent: "center"}}>
-                    <div
-                        style={{height: rowTopHeight(), marginTop: marginRow}}/>
-                    {dataScroll && dataScroll.slice(startSlice, startSlice + visibleRow).map((row: any, index: number) => (
-                            <div key={startSlice + index}
-                                 style={{display: "flex", height: rowHeight, marginTop: marginRow}}
-                            >
-                                {row[1].map((post: PostType, index: number) => (
-                                    <Card
-                                        onClick={() => navigate(`/detail/id=${post.id}`)}
-                                        size="small"
-                                        title={post.title}
-                                        key={index + ""}
-                                        className={cls.card}
+                <div
+                    className={cls.ListView}
+                    style={{
+                        height: wrapperHeight()
+                    }}
+                    ref={triggerRef}
+                    {...otherProps}
+                >
 
-                                        style={{width: widthElement, marginRight: marginRow, marginLeft: marginRow}}
-                                    >
-                                        <p>{post.body}</p>
-                                    </Card>
+                    <div style={{justifyContent: "center"}}>
+                        <div
+                            style={{height: rowTopHeight(), marginTop: marginRow}}/>
+                        {dataScroll && dataScroll.slice(startSlice, startSlice + visibleRow).map((row: any, index: number) => (
+                                <div key={startSlice + index}
+                                     style={{display: "flex", height: rowHeight, marginTop: marginRow}}
+                                >
+                                    {row[1].map((post: PostType, index: number) => (
+                                        <Card
+                                            onClick={() => navigate(`/detail/id=${post.id}`)}
+                                            size="small"
+                                            title={post.title}
+                                            key={index + ""}
+                                            className={cls.card}
 
-                                ))}
-                            </div>
-                        )
-                    )}
-                    <div style={{height: rowBottomHeight()}}/>
+                                            style={{width: widthElement, marginRight: marginRow, marginLeft: marginRow}}
+                                        >
+                                            <p>{post.body}</p>
+                                        </Card>
+
+                                    ))}
+                                </div>
+                            )
+                        )}
+                        <div style={{height: rowBottomHeight()}}/>
 
 
+                    </div>
                 </div>
-            </div>
+            }
+            {loading &&
+                <Loader/>
+            }
+            {error &&
+                <div>Ошибка загрузки</div>
+            }
+
         </WrapperPage>
     )
         ;
